@@ -52,6 +52,7 @@
     neovim
     git
     wget
+    zoxide
   ];
 
   system.stateVersion = "23.11";
