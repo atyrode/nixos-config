@@ -1,16 +1,14 @@
 {
   description = "Flake of atyrode";
 
-  outputs = inputs@{ self, nixpkgs, nixpkgs-stable, emacs-pin-nixpkgs, kdenlive-pin-nixpkgs,
-                     home-manager, nix-doom-emacs, nix-straight, stylix, blocklist-hosts,
-                     hyprland-plugins, rust-overlay, org-nursery, org-yaap, org-side-tree,
-                     org-timeblock, phscroll, ... }:
+  outputs = inputs@{ self, nixpkgs, home-manager, stylix, blocklist-hosts, 
+                    hyprland-plugins, rust-overlay, ... }:
     let
       # ---- SYSTEM SETTINGS ---- #
       systemSettings = {
         system = "x86_64-linux"; # system arch
         hostname = "alex"; # hostname
-        profile = "personal"; # select a profile defined from my profiles directory
+        profile = "work"; # select a profile defined from my profiles directory
         timezone = "Europe/Paris"; # select timezone
         locale = "en_US.UTF-8"; # select locale
         bootMode = "uefi"; # uefi or bios
@@ -49,38 +47,14 @@
                            editor);
       };
 
-      # create patched nixpkgs
-      nixpkgs-patched =
-        (import nixpkgs { system = systemSettings.system; }).applyPatches {
-          name = "nixpkgs-patched";
-          src = nixpkgs;
-          patches = [ ./patches/emacs-no-version-check.patch ];
-        };
-
       # configure pkgs
-      pkgs = import nixpkgs-patched {
+      pkgs = import nixpkgs {
         system = systemSettings.system;
         config = {
           allowUnfree = true;
           allowUnfreePredicate = (_: true);
         };
         overlays = [ rust-overlay.overlays.default ];
-      };
-
-      pkgs-stable = import nixpkgs-stable {
-        system = systemSettings.system;
-        config = {
-          allowUnfree = true;
-          allowUnfreePredicate = (_: true);
-        };
-      };
-
-      pkgs-emacs = import emacs-pin-nixpkgs {
-        system = systemSettings.system;
-      };
-
-      pkgs-kdenlive = import kdenlive-pin-nixpkgs {
-        system = systemSettings.system;
       };
 
       # configure lib
@@ -107,17 +81,8 @@
           ];
           extraSpecialArgs = {
             # pass config variables from above
-            inherit pkgs-stable;
-            inherit pkgs-emacs;
-            inherit pkgs-kdenlive;
             inherit systemSettings;
             inherit userSettings;
-            inherit (inputs) nix-doom-emacs;
-            inherit (inputs) org-nursery;
-            inherit (inputs) org-yaap;
-            inherit (inputs) org-side-tree;
-            inherit (inputs) org-timeblock;
-            inherit (inputs) phscroll;
             #inherit (inputs) nix-flatpak;
             inherit (inputs) stylix;
             inherit (inputs) hyprland-plugins;
@@ -133,7 +98,7 @@
           ]; # load configuration.nix from selected PROFILE
           specialArgs = {
             # pass config variables from above
-            inherit pkgs-stable;
+            inherit pkgs;
             inherit systemSettings;
             inherit userSettings;
             inherit (inputs) stylix;
@@ -165,49 +130,10 @@
     };
 
   inputs = {
-    nixpkgs.url = "nixpkgs/nixos-unstable";
-    nixpkgs-stable.url = "nixpkgs/nixos-23.11";
-    emacs-pin-nixpkgs.url = "nixpkgs/f8e2ebd66d097614d51a56a755450d4ae1632df1";
-    kdenlive-pin-nixpkgs.url = "nixpkgs/cfec6d9203a461d9d698d8a60ef003cac6d0da94";
+    nixpkgs.url = "nixpkgs/nixos-23.11";
 
     home-manager.url = "github:nix-community/home-manager/master";
     home-manager.inputs.nixpkgs.follows = "nixpkgs";
-
-    nix-doom-emacs.url = "github:nix-community/nix-doom-emacs";
-    nix-doom-emacs.inputs.nixpkgs.follows = "nixpkgs";
-
-    nix-straight.url = "github:librephoenix/nix-straight.el/pgtk-patch";
-    nix-straight.flake = false;
-    nix-doom-emacs.inputs.nix-straight.follows = "nix-straight";
-
-    eaf = {
-      url = "github:emacs-eaf/emacs-application-framework";
-      flake = false;
-    };
-    eaf-browser = {
-      url = "github:emacs-eaf/eaf-browser";
-      flake = false;
-    };
-    org-nursery = {
-      url = "github:chrisbarrett/nursery";
-      flake = false;
-    };
-    org-yaap = {
-      url = "gitlab:tygrdev/org-yaap";
-      flake = false;
-    };
-    org-side-tree = {
-      url = "github:localauthor/org-side-tree";
-      flake = false;
-    };
-    org-timeblock = {
-      url = "github:ichernyshovvv/org-timeblock";
-      flake = false;
-    };
-    phscroll = {
-      url = "github:misohena/phscroll";
-      flake = false;
-    };
 
     stylix.url = "github:danth/stylix";
 
