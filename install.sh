@@ -3,7 +3,7 @@
 # Automated script to install my dotfiles
 
 # Clone dotfiles
-nix-shell -p git --command "git clone https://gitlab.com/atyrode/nixos-config ~/.dotfiles"
+nix-shell -p git --command "git clone https://github.com/atyrode/nixos-config ~/.dotfiles"
 
 # Generate hardware config for new system
 sudo nixos-generate-config --show-hardware-config > ~/.dotfiles/system/hardware-configuration.nix
