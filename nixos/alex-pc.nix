@@ -50,7 +50,7 @@
     obsidian
     alejandra
     neovim
-    vim
+
     git
     wget
     zoxide
