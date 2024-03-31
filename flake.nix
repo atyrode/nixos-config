@@ -9,11 +9,11 @@
       # ---- SYSTEM SETTINGS ---- #
       systemSettings = {
         system = "x86_64-linux"; # system arch
-        hostname = "alex-pc"; # hostname
+        hostname = "alex"; # hostname
         profile = "personal"; # select a profile defined from my profiles directory
         timezone = "Europe/Paris"; # select timezone
         locale = "en_US.UTF-8"; # select locale
-        bootMode = "bios"; # uefi or bios
+        bootMode = "uefi"; # uefi or bios
         bootMountPath = "/boot"; # mount path for efi boot partition; only used for uefi boot mode
         grubDevice = ""; # device identifier for grub; only used for legacy (bios) boot mode
       };
@@ -23,14 +23,14 @@
         username = "alex"; # username
         name = "Alex"; # name/identifier
         email = "alex.tyrode@outlook.fr"; # email (used for certain configurations)
-        dotfilesDir = "~/dotfiles"; # absolute path of the local repo
+        dotfilesDir = "~/.dotfiles"; # absolute path of the local repo
         theme = "uwunicorn-yt"; # selcted theme from my themes directory (./themes/)
         wm = "hyprland"; # Selected window manager or desktop environment; must select one in both ./user/wm/ and ./system/wm/
         # window manager type (hyprland or x11) translator
         wmType = if (wm == "hyprland") then "wayland" else "x11";
-        browser = "qutebrowser"; # Default browser; must select one from ./user/app/browser/
+        browser = "librewolf"; # Default browser; must select one from ./user/app/browser/
         defaultRoamDir = "Personal.p"; # Default org roam directory relative to ~/Org
-        term = "kitty"; # Default terminal command;
+        term = "alacritty"; # Default terminal command;
         font = "Intel One Mono"; # Selected font
         fontPkg = pkgs.intel-one-mono; # Font package
         editor = "nvim"; # Default editor;
