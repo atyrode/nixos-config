@@ -1,15 +1,15 @@
-{ config, pkgs, ... }:
-
 {
-  imports =
-    [
-      /etc/nixos/hardware-configuration.nix
-      ./nixosModules/hyprland.nix
-    ];
+  config,
+  pkgs,
+  ...
+}: {
+  imports = [
+    /etc/nixos/hardware-configuration.nix
+    ./nixosModules/hyprland.nix
+  ];
 
+  nix.settings.experimental-features = ["nix-command" "flakes"];
 
-  nix.settings.experimental-features = ["nix-command" "flakes" ];
-  
   boot.loader.systemd-boot.enable = true;
   boot.loader.efi.canTouchEfiVariables = true;
 
@@ -34,7 +34,7 @@
   users.users.alex = {
     isNormalUser = true;
     description = "alex";
-    extraGroups = [ "networkmanager" "wheel" ];
+    extraGroups = ["networkmanager" "wheel"];
   };
 
   nixpkgs.config.allowUnfree = true;
@@ -51,7 +51,8 @@
     alejandra
     neovim
     git
+    wget
   ];
-  
+
   system.stateVersion = "23.11";
 }
